@@ -39,5 +39,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val navController = findNavController()
+        viewModel.authenticationState.observe(viewLifecycleOwner, {
+            when(it) {
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> Log.i(TAG, "Authenticated")
+                LoginViewModel.AuthenticationState.UNAUTHENTICATED -> navController.navigate(
+                    R.id.loginFragment
+                )
+                else -> Log.e(TAG, "New $it state that doesn't require any UI change.")
+            }
+        })
     }
 }
